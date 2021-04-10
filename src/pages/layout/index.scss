@@ -1,0 +1,21 @@
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: #FFF;
+  background-image: url('../../commons/images/logo-con-tom.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+.header-aggrid {
+  height: 33px;
+  .header-aggrid-pageSize {
+    float: left;
+  }
+  .header-aggrid-button {
+    float: right;
+  }
+}
+.grid-content {
+  height: 100%;
+}
