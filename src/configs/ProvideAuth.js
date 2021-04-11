@@ -7,12 +7,17 @@ import { GET_ME } from './provideAuth.gql'
 export default (props) => {
   const [state, setState] = useReducer(reducer, {
     isAuth: true,
-    currentUser: {}
+    currentUser: {},
+    sourceCompany: {}
   })
   const [
     getMe, 
     { data }
-  ] = useLazyQuery(GET_ME)
+  ] = useLazyQuery(GET_ME, {
+    variables: {
+      idCompany: 'default'
+    }
+  })
 
   useEffect(() => {
     if (localStorage.getItem('access-token') !== null) {
@@ -20,6 +25,7 @@ export default (props) => {
     } else {
       setState({
         currentUser: {},
+        sourceCompany: data?.company,
         isAuth: false
       })
     }
@@ -29,11 +35,13 @@ export default (props) => {
       if (data?.getMe) {
         setState({
           currentUser: data?.getMe,
+          sourceCompany: data?.company,
           isAuth: true
         })
       } else if (data?.getMe !== undefined) {
         setState({
           currentUser: {},
+          sourceCompany: data?.company,
           isAuth: false
         })
       }
@@ -53,13 +61,19 @@ export default (props) => {
       isAuth
     })
   }
+  const setSrcCompany = (sourceCompany) => {
+    setState({
+      sourceCompany
+    })
+  }
   return (
     <AppContext.Provider
       value={{
         ...state,
         setAppRef,
         deleteAppRef,
-        setAuth
+        setAuth,
+        setSrcCompany
       }}
     >
       {props.children}

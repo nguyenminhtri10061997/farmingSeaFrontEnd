@@ -21,7 +21,7 @@ export default React.memo((props) => {
     { data, error, loading }
   ] = useLazyQuery(LOGIN);
 
-  if (data) {
+  if (data?.login?.token) {
     const fields = form.getFieldsValue()
     if (fields?.calculate?.remember) {
       localStorage.setItem('usernameInput', fields.username)
@@ -57,6 +57,13 @@ export default React.memo((props) => {
       notification.error({
         message: 'Lỗi đăng nhập',
         description: 'Lỗi đăng nhập',
+        placement: 'topLeft',
+      })
+    }
+    if (!data?.login?.token) {
+      notification.error({
+        message: 'Lỗi đăng nhập',
+        description: 'Sai tài khoản hoặc mật khẩu',
         placement: 'topLeft',
       })
     }

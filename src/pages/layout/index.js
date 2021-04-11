@@ -1,5 +1,5 @@
 import React, { useReducer, useContext, useEffect } from 'react'
-import { Layout, Menu, Breadcrumb, Avatar, Row, Col, Dropdown } from 'antd'
+import { Layout, Menu, Breadcrumb, Avatar, Row, Col, Dropdown, Select } from 'antd'
 import { PieChartOutlined, UserOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { reducer } from '../../commons/commonFunc'
@@ -11,6 +11,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 
 const { Header, Content, Footer, Sider } = Layout
+const { Option } = Select
 
 const objPathToNameBreacum = {}
 listRouter.forEach(route => {
@@ -18,6 +19,7 @@ listRouter.forEach(route => {
 })
 export default React.memo((props) => {
   const appContext = useContext(AppContext)
+
   const [state, setState] = useReducer(reducer, {
     collapsed: true,
     menuCurrentKeyActive: 'home'
@@ -69,25 +71,30 @@ export default React.memo((props) => {
       <Layout className='site-layout'>
         <Header className='site-layout-background' style={{ padding: 0 }}>
           <Row>
-            <Col span={20}>
+            <Col flex='auto'>
               <h3
                 style={{
                   color: 'white',
-                  margin: '0 3rem'
+                  margin: '0 1rem'
                 }}
               >
-                Hệ thống quản lý đặt hàng thủy sản  
+                HỆ THỐNG QUẢN LÝ HÀNG THỦY SẢN
               </h3>
             </Col>
-            <Col span={4}>
+            <Col flex='279px'>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  height: '100%',
+                  height: 64,
                   justifyContent: 'flex-end'
                 }}
               >
+                <Select defaultValue='default' style={{ width: 200 }}>
+                  {appContext?.sourceCompany?._id && (
+                    <Option value={appContext.sourceCompany._id}>{appContext.sourceCompany.name}</Option>
+                  )}
+                </Select>
                 <Dropdown
                   overlay={(
                     <Menu onClick={handleClickLogOut}>
@@ -101,7 +108,7 @@ export default React.memo((props) => {
                   trigger={['click']}
                 >
                   <Avatar
-                    style={{ backgroundColor: 'rgb(24, 144, 255)', margin: '0 3rem' }}
+                    style={{ backgroundColor: 'rgb(24, 144, 255)', margin: '0 16px' }}
                     icon={<UserOutlined />}
                   />
                 </Dropdown>
@@ -114,8 +121,7 @@ export default React.memo((props) => {
             <Breadcrumb.Item>{objPathToNameBreacum[props.location.pathname]}</Breadcrumb.Item>
           </Breadcrumb>
           <div
-            className='site-layout-background'
-            style={{ padding: 24, minHeight: 360 }}
+            className='layout-content'
           >
             {props.children}
           </div>

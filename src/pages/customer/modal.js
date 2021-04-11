@@ -160,7 +160,7 @@ export default React.memo(forwardRef((props, ref) => {
 
   return (
     <Modal
-      title={state.selectedRow?.name || 'Công ty mới'}
+      title={state.selectedRow?.name || 'Khách hàng mới'}
       visible={state.isVisible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -170,31 +170,31 @@ export default React.memo(forwardRef((props, ref) => {
         form={form}
       >
         <Form.Item
-          label='Mã công ty'
+          label='Mã khách hàng'
           name='code'
-          rules={[patternRule.required('Mã công ty là bắt buộc')]}
+          rules={[patternRule.required('Mã khách hàng là bắt buộc')]}
 
         >
-          <Input disabled={state.selectedRow?._id === 'default'} placeholder='Nhập mã công ty' />
+          <Input placeholder='Nhập mã Khách hàng' />
         </Form.Item>
         <Form.Item
-          label='Tên công ty'
-          name='name'
-          rules={[patternRule.required('Tên công ty là bắt buộc')]}
+          label='Tên khách hàng'
+          name='fullName'
+          rules={[patternRule.required('Tên Khách hàng là bắt buộc')]}
         >
-          <Input placeholder='Nhập tên công ty' />
+          <Input placeholder='Nhập tên khách hàng' />
         </Form.Item>
         <Form.Item
-          label='Số điện thoại công ty'
+          label='Số điện thoại khách hàng'
           name='mobile'
         >
-          <Input placeholder='Nhập số điện thoại công ty' />
+          <Input placeholder='Nhập số điện thoại khách hàng' />
         </Form.Item>
         <Form.Item
-          label='Địa chỉ công ty'
+          label='Địa chỉ khách hàng'
           name='address'
         >
-          <Input placeholder='Nhập địa chỉ công ty' />
+          <Input placeholder='Nhập địa chỉ Khách hàng' />
         </Form.Item>
       </Form>
     </Modal>

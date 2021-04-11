@@ -23,14 +23,14 @@ export default React.memo(() => {
   }
 
   const handleClickEdit = (slr) => {
-    // if (slr.length === 1 && slr[0]._id === 'default') {
-    //   notification.error({
-    //     message: 'Lỗi chỉnh sửa',
-    //     description: 'Bạn không thể Chỉnh sửa công ty mặc định',
-    //     placement: 'topLeft',
-    //   })
-    //   return
-    // }
+    if (slr.length === 1 && slr[0]._id === 'default') {
+      notification.error({
+        message: 'Lỗi chỉnh sửa',
+        description: 'Bạn không thể chỉnh sửa khách vãng lai',
+        placement: 'topLeft',
+      })
+      return
+    }
     modalRef.current?.handleOpen(slr[0])
   }
 
@@ -76,7 +76,7 @@ export default React.memo(() => {
     if (slr.length === 1 && slr[0]._id === 'default') {
       notification.error({
         message: 'Lỗi Xóa',
-        description: 'Bạn không thể xóa công ty mặc định',
+        description: 'Bạn không thể xóa khách vãng lai',
         placement: 'topLeft',
       })
       return
@@ -90,15 +90,15 @@ export default React.memo(() => {
         onGridReady={(gridOpts) => {
           gridOpts.api.sizeColumnsToFit()
         }}
-        rowData={data?.conpanies || []}
+        rowData={data?.customers || []}
         columDefs={[
           {
-            headerName: 'Mã công ty',
+            headerName: 'Mã khách hàng',
             field: 'code',
           },
           {
-            headerName: 'Tên công ty',
-            field: 'name',
+            headerName: 'Tên khách hàng',
+            field: 'fullName',
           },
           {
             headerName: 'Địa chỉ',

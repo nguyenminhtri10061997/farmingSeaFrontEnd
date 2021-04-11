@@ -22,26 +22,30 @@ const AppRouter = React.memo((props) => {
         <Spin style={{ position: 'fixed', top: '50%', left: '50%' }} tip='Loading...' />
       )}>
         <Layout {...props}>
-          <Switch>
-            {Object.keys(objComponent).map((key, idx) => (
+          <React.Suspense fallback={(
+            <Spin style={{ position: 'fixed', top: '50%', left: '50%' }} tip='Loading...' />
+          )}>
+            <Switch>
+              {Object.keys(objComponent).map((key, idx) => (
+                <Route
+                  key={idx}
+                  path={hashByKeyComponent[key].path}
+                  render={(routerProps) => {
+                    const Component = objComponent[key]
+                    return <Component {...routerProps} />
+                  }}
+                />
+              ))}
               <Route
-                key={idx}
-                path={hashByKeyComponent[key].path}
-                render={(routerProps) => {
-                  const Component = objComponent[key]
-                  return <Component {...routerProps} />
+                path='/'
+                render={() => {
+                  return (
+                    <Redirect to='/home' />
+                  )
                 }}
               />
-            ))}
-            <Route
-              path='/'
-              render={() => {
-                return (
-                  <Redirect to='/home' />
-                )
-              }}
-            />
-          </Switch>
+            </Switch>
+          </React.Suspense>
         </Layout>
       </React.Suspense>
     )

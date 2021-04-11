@@ -1,11 +1,11 @@
 
 import { AgGridReact, AgGridColumn } from 'ag-grid-react'
 import { Button } from 'antd'
-import React, { useRef, useReducer } from 'react'
+import React, { useRef, useReducer, useEffect } from 'react'
 import { reducer } from '../../commons/commonFunc'
 import 'ag-grid-enterprise'
 
-export default React.memo((props) => {
+const Grid = React.memo(({ buttons, columDefs, checkboxSelection, onGridReady, ...props }) => {
   const [state, setState] = useReducer(reducer, {
     typeSelectedRow: 'none'
   })
@@ -15,10 +15,12 @@ export default React.memo((props) => {
   }
   const handleChangeSelected = () => {
     if (gridApi.current.getSelectedRows().length > 1) {
-      setState({
-        typeSelectedRow: 'multi'
-      })
-    } if (gridApi.current.getSelectedRows().length === 1) {
+      if (state.typeSelectedRow !== 'multi') {
+        setState({
+          typeSelectedRow: 'multi'
+        })
+      }
+    } else if (gridApi.current.getSelectedRows().length === 1) {
       setState({
         typeSelectedRow: 'single'
       })
@@ -28,6 +30,10 @@ export default React.memo((props) => {
       })
     }
   }
+
+  useEffect(() => {
+    gridApi.current?.deselectAll()
+  }, [props.rowData])
 
   return (
     <div className='grid-content'>
@@ -43,7 +49,7 @@ export default React.memo((props) => {
           </select>
         </div>
         <div className='header-aggrid-button'>
-          {props.buttons?.map((button, idx) => {
+          {buttons?.map((button, idx) => {
             let isDisable = false
             if (
               (button.type === 'single' && state.typeSelectedRow !== 'single')
@@ -67,27 +73,30 @@ export default React.memo((props) => {
         </div>
       </div>
       <AgGridReact
-        rowData={props.rowData || []}
         rowSelection='multiple'
         defaultColDef={{
           sortable: true,
           floatingFilter: true,
           suppressMenu: true,
-          filter: 'agTextColumnFilter'
+          filter: 'agTextColumnFilter',
+          resizable: true
         }}
         onGridReady={(gridOpts) => {
-          gridOpts.api.sizeColumnsToFit()
           gridApi.current = gridOpts.api
+          if (typeof onGridReady === 'function') {
+            onGridReady(gridOpts)
+          }
         }}
         pagination={true}
         paginationPageSize={10}
         onSelectionChanged={handleChangeSelected}
+        {...props}
       >
         {
-          props.columDefs?.map((column, idx) => {
+          columDefs?.map(({ field, headerName, ...columDefs}, idx) => {
             let propsFirstColumn = {}
             if (idx === 0) {
-              if (props.checkboxSelection) {
+              if (checkboxSelection) {
                 propsFirstColumn = {
                   checkboxSelection: true,
                   headerCheckboxSelection: true,
@@ -97,9 +106,10 @@ export default React.memo((props) => {
             return (
               <AgGridColumn
                 key={idx}
-                field={column.field}
-                headerName={column.headerName}
+                field={field}
+                headerName={headerName}
                 {...propsFirstColumn}
+                {...columDefs}
               />
             )
           })
@@ -108,3 +118,5 @@ export default React.memo((props) => {
     </div>
   )
 })
+
+export default Grid

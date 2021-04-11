@@ -1,0 +1,19 @@
+.modalStockModel {
+  table, td, th {
+    border: 1px so  lid black;
+  }
+  table {
+    .ant-form-item-explain {
+      display: none;
+    }
+    td {
+      text-align: center;
+      input {
+        text-align: center;
+      }
+    }
+    td > div {
+      margin: 0;
+    }
+  }
+}

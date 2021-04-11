@@ -23,14 +23,6 @@ export default React.memo(() => {
   }
 
   const handleClickEdit = (slr) => {
-    // if (slr.length === 1 && slr[0]._id === 'default') {
-    //   notification.error({
-    //     message: 'Lỗi chỉnh sửa',
-    //     description: 'Bạn không thể Chỉnh sửa công ty mặc định',
-    //     placement: 'topLeft',
-    //   })
-    //   return
-    // }
     modalRef.current?.handleOpen(slr[0])
   }
 
@@ -73,14 +65,6 @@ export default React.memo(() => {
   }
 
   const handleClickDeletes = (slr) => {
-    if (slr.length === 1 && slr[0]._id === 'default') {
-      notification.error({
-        message: 'Lỗi Xóa',
-        description: 'Bạn không thể xóa công ty mặc định',
-        placement: 'topLeft',
-      })
-      return
-    }
     deletes(slr.map(i => i._id))
   }
 
@@ -90,14 +74,14 @@ export default React.memo(() => {
         onGridReady={(gridOpts) => {
           gridOpts.api.sizeColumnsToFit()
         }}
-        rowData={data?.conpanies || []}
+        rowData={data?.vendors || []}
         columDefs={[
           {
-            headerName: 'Mã công ty',
+            headerName: 'Mã nhà cung cấp',
             field: 'code',
           },
           {
-            headerName: 'Tên công ty',
+            headerName: 'Tên nhà cung cấp',
             field: 'name',
           },
           {

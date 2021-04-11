@@ -10,5 +10,23 @@ export default [
     path: '/company',
     component: 'company',
     name: 'Công ty'
+  },
+  {
+    exact: true,
+    path: '/vendor',
+    component: 'vendor',
+    name: 'Nhà cung cấp'
+  },
+  {
+    exact: true,
+    path: '/customer',
+    component: 'customer',
+    name: 'Khách hàng'
+  },
+  {
+    exact: true,
+    path: '/stockModel',
+    component: 'stockModel',
+    name: 'Hàng hóa'
   }
 ]

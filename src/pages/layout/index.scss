@@ -1,3 +1,10 @@
+.layout-content {
+  height: calc(100vh - 194px);
+  overflow-y: auto;
+}
+.ant-layout-header {
+  height: auto;
+}
 .logo {
   height: 32px;
   margin: 16px;

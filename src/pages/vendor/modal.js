@@ -160,7 +160,7 @@ export default React.memo(forwardRef((props, ref) => {
 
   return (
     <Modal
-      title={state.selectedRow?.name || 'Công ty mới'}
+      title={state.selectedRow?.name || 'Nhà cung cấp mới'}
       visible={state.isVisible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -170,31 +170,31 @@ export default React.memo(forwardRef((props, ref) => {
         form={form}
       >
         <Form.Item
-          label='Mã công ty'
+          label='Mã nhà cung cấp'
           name='code'
-          rules={[patternRule.required('Mã công ty là bắt buộc')]}
+          rules={[patternRule.required('Mã nhà cung cấp là bắt buộc')]}
 
         >
-          <Input disabled={state.selectedRow?._id === 'default'} placeholder='Nhập mã công ty' />
+          <Input placeholder='Nhập mã nhà cung cấp' />
         </Form.Item>
         <Form.Item
-          label='Tên công ty'
+          label='Tên nhà cung cấp'
           name='name'
-          rules={[patternRule.required('Tên công ty là bắt buộc')]}
+          rules={[patternRule.required('Tên nhà cung cấp là bắt buộc')]}
         >
-          <Input placeholder='Nhập tên công ty' />
+          <Input placeholder='Nhập tên nhà cung cấp' />
         </Form.Item>
         <Form.Item
-          label='Số điện thoại công ty'
+          label='Số điện thoại nhà cung cấp'
           name='mobile'
         >
-          <Input placeholder='Nhập số điện thoại công ty' />
+          <Input placeholder='Nhập số điện thoại nhà cung cấp' />
         </Form.Item>
         <Form.Item
-          label='Địa chỉ công ty'
+          label='Địa chỉ nhà cung cấp'
           name='address'
         >
-          <Input placeholder='Nhập địa chỉ công ty' />
+          <Input placeholder='Nhập địa chỉ nhà cung cấp' />
         </Form.Item>
       </Form>
     </Modal>
