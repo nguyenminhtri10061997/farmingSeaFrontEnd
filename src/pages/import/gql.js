@@ -33,3 +33,13 @@ export const DELETES = gql`
     deleteVendors(ids: $ids)
   }
 `
+
+export const SEARCH_VENDORS = gql`
+  query searchVendors($searchString: String!, $limit: Int, $idDefault: ID) {
+    searchVendors(searchString: $searchString, limit: $limit, idDefault: $idDefault) {
+      _id
+      code
+      name
+    }
+  }
+`

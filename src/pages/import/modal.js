@@ -1,19 +1,21 @@
 import React, { useReducer, forwardRef, useImperativeHandle, useRef } from 'react'
 import { Modal, notification, Input, Form, Steps } from 'antd'
-import { UserOutlined, SolutionOutlined, LoadingOutlined } from '@ant-design/icons'
+// import { UserOutlined, SolutionOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useMutation } from '@apollo/client'
 import { reducer, patternRule, checkDoubleClickFunc } from '../../commons/commonFunc'
 import {
   CREATE_ONE,
   UPDATE_ONE
 } from './gql'
+import CreateImport from './step1'
 
 const { Step } = Steps
 
 export default React.memo(forwardRef((props, ref) => {
   const [state, setState] = useReducer(reducer, {
     isVisible: false,
-    selectedRow: {}
+    selectedRow: {},
+    current: 0
   })
 
   const [form] = Form.useForm()
@@ -161,32 +163,44 @@ export default React.memo(forwardRef((props, ref) => {
     })
   }
 
+  const renderByStep = (currentStep) => {
+    if (currentStep === 0) {
+      return (
+      <CreateImport />
+      )
+    }
+    return (
+      <Form
+        layout='vertical'
+        form={form}
+      >
+        <Form.Item
+          label='Mã nhà cung cấp'
+          name='code'
+          rules={[patternRule.required('Mã nhà cung cấp là bắt buộc')]}
+        >
+          <Input placeholder='Nhập mã nhà cung cấp' />
+        </Form.Item>
+      </Form>
+    )
+  }
+
   return (
     <Modal
       title={state.selectedRow?.name || 'Biên bản nhập kho mới'}
       visible={state.isVisible}
       onOk={handleOk}
       onCancel={handleCancel}
+      cancelText='Đóng'
+      okText='Bước tiếp theo'
     >
       <div>
-        <Steps>
-          <Step status='process' title='Tạo biên bản nhập' icon={<UserOutlined />} />
-          <Step status='wait' title='Chỉnh sửa nhập hàng' icon={<SolutionOutlined />} />
-          <Step status='finish' title='Duyệt nhập hàng' icon={<LoadingOutlined />} />
-          <Step status='error' title='Duyệt nhập hàng' icon={<LoadingOutlined />} />
+        <Steps current={state.current}>
+          <Step title='Tạo biên bản nhập' />
+          <Step title='Chỉnh sửa nhập hàng' />
+          <Step title='Hoàn thành nhập hàng' />
         </Steps>
-        <Form
-          layout='vertical'
-          form={form}
-        >
-          <Form.Item
-            label='Mã nhà cung cấp'
-            name='code'
-            rules={[patternRule.required('Mã nhà cung cấp là bắt buộc')]}
-          >
-            <Input placeholder='Nhập mã nhà cung cấp' />
-          </Form.Item>
-        </Form>
+        {renderByStep(state.current)}
       </div>
     </Modal>
   );
