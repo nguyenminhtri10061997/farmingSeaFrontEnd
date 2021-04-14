@@ -28,5 +28,11 @@ export default [
     path: '/stockModel',
     component: 'stockModel',
     name: 'Hàng hóa'
+  },
+  {
+    exact: true,
+    path: '/import',
+    component: 'import',
+    name: 'Nhập kho'
   }
 ]

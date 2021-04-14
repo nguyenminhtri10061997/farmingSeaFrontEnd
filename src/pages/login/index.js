@@ -60,13 +60,13 @@ export default React.memo((props) => {
         placement: 'topLeft',
       })
     }
-    if (!data?.login?.token) {
-      notification.error({
-        message: 'Lỗi đăng nhập',
-        description: 'Sai tài khoản hoặc mật khẩu',
-        placement: 'topLeft',
-      })
-    }
+    // if (!loading && !data?.login?.token) {
+    //   notification.error({
+    //     message: 'Lỗi đăng nhập',
+    //     description: 'Sai tài khoản hoặc mật khẩu',
+    //     placement: 'topLeft',
+    //   })
+    // }
   }
   return (
     <div className='loginWrapper'>
