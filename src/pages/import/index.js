@@ -1,19 +1,31 @@
-import React, { useRef } from 'react'
-import { notification, Modal } from 'antd'
+import React, { useRef, useContext } from 'react'
+import { notification, Modal, DatePicker } from 'antd'
+import moment from 'moment'
+import { useMutation, useQuery } from '@apollo/client'
+import { PlusOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import List from '../commons/list'
 import Grid from '../commons/grid'
-import { useMutation } from '@apollo/client'
-import { PlusOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import ModalComponent from './modal'
-import { useQuery } from '@apollo/client'
 import { GET_ALL, DELETES } from './gql'
+import { AppContext } from '../../configs/appContext'
 
 const { confirm } = Modal
+const { RangePicker } = DatePicker
 
 export default React.memo(() => {
+  const appContext = useContext(AppContext)
   const modalRef = useRef()
 
+  const startDate = useRef(moment().startOf('day').valueOf())
+  const endDate = useRef(moment().endOf('day').valueOf())
+
   const { data, refetch } = useQuery(GET_ALL, {
+    variables: {
+      type: 'IMPORT',
+      startDate: startDate.current,
+      endDate: endDate.current,
+      idDesCompany: appContext.sourceCompany._id
+    },
     fetchPolicy: 'no-cache'
   })
   const [deleteCompanies] = useMutation(DELETES, { fetchPolicy: 'no-cache' })
@@ -68,16 +80,27 @@ export default React.memo(() => {
     deletes(slr.map(i => i._id))
   }
 
+  const onChangeRangePicker = (dates) => {
+    startDate.current = dates[0].valueOf()
+    endDate.current = dates[1].endOf('day').valueOf()
+    refetch()
+  }
+
   return (
     <List>
+      <RangePicker
+        defaultValue={[moment(startDate.current), moment(endDate.current)]}
+        placeholder={['Ngày bắt đầu', 'Ngày kết thúc']}
+        onChange={onChangeRangePicker}
+      />
       <Grid
         onGridReady={(gridOpts) => {
           gridOpts.api.sizeColumnsToFit()
         }}
-        rowData={data?.vendors || []}
+        rowData={data?.documents || []}
         columDefs={[
           {
-            headerName: 'Mã nhà cung cấp',
+            headerName: 'Mã phiếu nhập',
             field: 'code',
           },
           {
@@ -91,6 +114,10 @@ export default React.memo(() => {
           {
             headerName: 'SĐT',
             field: 'mobile',
+          },
+          {
+            headerName: 'Tổng tiền',
+            field: 'total',
           }
         ]}
         checkboxSelection

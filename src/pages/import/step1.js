@@ -41,7 +41,9 @@ export default React.memo(forwardRef((props, ref) => {
     handleDidMount()
   }, [])
 
-  useImperativeHandle(ref, () => ({}))
+  useImperativeHandle(ref, () => ({
+    form
+  }))
 
   const handleSearchVendor = (val, wait) => {
     if (waiting.current) clearTimeout(waiting.current)
@@ -65,7 +67,7 @@ export default React.memo(forwardRef((props, ref) => {
       >
         <Form.Item
           label='Nhà cung cấp'
-          name='idVendor'
+          name='idSrcVendor'
           rules={[patternRule.required('Nhà cung cấp là bắt buộc')]}
         >
           <Select

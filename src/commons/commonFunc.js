@@ -1,3 +1,6 @@
+import gql from 'graphql-tag'
+import { client } from '../configs/apollo'
+
 const reducer = (prevState, state) => ({
   ...prevState,
   ...state,
@@ -48,8 +51,29 @@ const checkDoubleClickFunc = async (varCheckRef, callback, variableCallback = []
   varCheckRef.current = false
 }
 
+const queryData = async (inputQuery, variables = {}, hasGql = true, fetchPolicy = 'no-cache') => {
+  const query = hasGql ? inputQuery : gql`${inputQuery}`
+  const data = await client.query({
+    query,
+    variables,
+    fetchPolicy
+  })
+  return data
+}
+
+const mutateData = async (inputQuery, variables = {}, hasGql = true) => {
+  const mutation = hasGql ? inputQuery : gql`${inputQuery}`
+  const data = await client.mutate({
+    mutation,
+    variables
+  })
+  return data
+}
+
 export {
   reducer,
   patternRule,
-  checkDoubleClickFunc
+  checkDoubleClickFunc,
+  queryData,
+  mutateData,
 }

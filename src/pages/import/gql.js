@@ -1,20 +1,22 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL = gql`
-  query vendors {
-    vendors {
+  query ($type: EnumTypeDocument, $startDate: Float, $endDate: Float, $idDesCompany: ID) {
+    documents (type: $type, idDesCompany: $idDesCompany, startDate: $startDate, endDate: $endDate){
       _id
       code
-      name
-      mobile
-      address
+      srcVendor {
+        name
+        mobile
+        address
+      }
     }
   }
 `
 
 export const CREATE_ONE = gql`
-  mutation createVendor($info: infoScalar) {
-    createVendor(info: $info) {
+  mutation createDocument($info: infoScalar) {
+    createDocument(info: $info) {
       _id
     }
   }
