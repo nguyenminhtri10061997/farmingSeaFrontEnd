@@ -8,8 +8,8 @@ import { getMainDefinition } from 'apollo-utilities'
 
 import { errorMiddleware } from './errorsMiddleware'
 
-// const domain = window.location.host // len sever can doi lai
-const domain = 'localhost:3001' // len sever can doi lai
+const domain = window.location.host // len sever can doi lai
+// const domain = 'localhost:3001' // len sever can doi lai
 const endPoint = `${process.env.END_POINT || 'graphql'}`
 
 const urn = `${domain}/${endPoint}`
