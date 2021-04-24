@@ -6,8 +6,8 @@ export const GET_ALL = gql`
       _id
       code
       state
-      srcVendor {
-        name
+      desCustomer {
+        fullName
         mobile
         address
       }
@@ -21,8 +21,8 @@ export const GET_ONE = gql`
       _id
       code
       state
-      srcVendor {
-        name
+      desCustomer {
+        fullName
         mobile
         address
       }
@@ -41,20 +41,20 @@ export const GET_ONE = gql`
           }
         }
         quantity
-        buyPrice
+        salePrice
       }
     }
   }
 `
 
 export const CREATE_ONE = gql`
-  mutation createDocument($info: infoScalar) {
-    createDocument(info: $info) {
+  mutation createDocumentSale($info: infoScalar) {
+    createDocumentSale(info: $info) {
       _id
       code
       state
-      srcVendor {
-        name
+      desCustomer {
+        fullName
         mobile
         address
       }
@@ -66,26 +66,29 @@ export const CREATE_ONE = gql`
   }
 `
 
-export const SEARCH_VENDORS = gql`
-  query searchVendors($searchString: String!, $limit: Int, $idDefault: ID) {
-    searchVendors(searchString: $searchString, limit: $limit, idDefault: $idDefault) {
+export const SEARCH_CUSTOMERS = gql`
+  query searchCustomers($searchString: String!, $limit: Int, $idDefault: ID) {
+    searchCustomers(searchString: $searchString, limit: $limit, idDefault: $idDefault) {
       _id
       code
-      name
+      fullName
     }
   }
 `
 
 export const SEARCH_STOCKMODELS = gql`
-  query searchStockModels($searchString: String!, $limit: Int, $idDefault: ID) {
-    searchStockModels(searchString: $searchString, limit: $limit, idDefault: $idDefault) {
+  query searchStockModels($searchString: String!, $limit: Int, $idDefault: ID, $idCompany: ID) {
+    searchStockModels(searchString: $searchString, limit: $limit, idDefault: $idDefault, idCompany: $idCompany) {
       _id
       code
       name
       detail {
         unit
         factor
+        realFactor
+        costPrice
       }
+      countByStore
     }
   }
 `
@@ -117,7 +120,13 @@ export const CANCEL_DOCUMENT = gql`
   }
 `
 export const VERIFY_DOCUMENT = gql`
-  mutation verifyCompleteDocument($id: ID!) {
-    verifyCompleteDocument(id: $id)
+  mutation verifyCompleteDocumentSale($id: ID!) {
+    verifyCompleteDocumentSale(id: $id)
+  }
+`
+
+export const CANCEL_COMPLETED_DOCUMENT = gql`
+  mutation canceledCompletedDocumentSale($id: ID!) {
+    canceledCompletedDocumentSale(id: $id)
   }
 `

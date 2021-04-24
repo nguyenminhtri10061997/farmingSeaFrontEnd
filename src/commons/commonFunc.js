@@ -52,13 +52,21 @@ const checkDoubleClickFunc = async (varCheckRef, callback, variableCallback = []
 }
 
 const queryData = async (inputQuery, variables = {}, hasGql = true, fetchPolicy = 'no-cache') => {
-  const query = hasGql ? inputQuery : gql`${inputQuery}`
-  const data = await client.query({
-    query,
-    variables,
-    fetchPolicy
-  })
-  return data
+  try {
+    const query = hasGql ? inputQuery : gql`${inputQuery}`
+    const data = await client.query({
+      query,
+      variables,
+      fetchPolicy
+    })
+    return data
+  } catch(err) {
+    return {
+      errors: {
+        message: err
+      }
+    }
+  }
 }
 
 const mutateData = async (inputQuery, variables = {}, hasGql = true) => {
@@ -70,10 +78,25 @@ const mutateData = async (inputQuery, variables = {}, hasGql = true) => {
   return data
 }
 
+const FormatNumber = (varValue, decimalLength) => {
+  const value = !varValue ? '0' : varValue
+  let tmp = typeof value === 'string' ? value : value.toString()
+  tmp = tmp.replace(/\$\s?|(,*)/g, '')
+
+  if (tmp.indexOf('.') !== -1) {
+    tmp = Number(tmp).toFixed(decimalLength !== undefined ? decimalLength : 2)
+    const num1 = tmp.split('.')[0]
+    const num2 = tmp.split('.')[1].slice(0, decimalLength !== undefined ? decimalLength : 2)
+    return `${num1.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}${Number(`0.${num2}`) !== 0 ? '.' : ''}${`${Number(`0.${num2}`)}`.slice(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  }
+  return tmp.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 export {
   reducer,
   patternRule,
   checkDoubleClickFunc,
   queryData,
   mutateData,
+  FormatNumber
 }

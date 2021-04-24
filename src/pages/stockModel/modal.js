@@ -37,6 +37,9 @@ export default React.memo(forwardRef((props, ref) => {
       form.setFieldsValue({
         calculate: {
           selectFactor: 1
+        },
+        detail: {
+          costPrice: 0
         }
       })
     }
@@ -345,6 +348,13 @@ export default React.memo(forwardRef((props, ref) => {
           <Input placeholder='Nhập tên hàng hóa' />
         </Form.Item>
         <Form.Item
+          label='Giá vốn'
+          name={['detail', 'costPrice']}
+          rules={[patternRule.required('giá vốn là bắt buộc')]}
+        >
+          <InputNumber style={{ width: '100%' }} min={0} placeholder='Nhập giá vốn' />
+        </Form.Item>
+        <Form.Item
           label='quy cách'
           name={['calculate', 'selectFactor']}
         >
@@ -358,7 +368,7 @@ export default React.memo(forwardRef((props, ref) => {
             <Option value={7}>7 đơn vị</Option>
           </Select>
         </Form.Item>
-          {renderTableUnitFactor(state.unit)}
+        {renderTableUnitFactor(state.unit)}
       </Form>
     </Modal>
   );

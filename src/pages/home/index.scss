@@ -1,0 +1,62 @@
+.home-content {
+  @keyframes move {
+    0% {
+      background-position: 0 0
+    }
+
+    50% {
+      background-position: 100% 0
+    }
+
+    100% {
+      background-position: 0 0
+    }
+  }
+  .content-weather {
+    background-size: 400% 100% !important;
+    background: linear-gradient(45deg, #49D49D 10%, #A2C7E5 90%);
+    animation: move 5s ease infinite;
+    height: 8rem;
+    width: 13rem;
+    margin: auto;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    color: white;
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+  }
+  .card {
+    // display: grid;
+    // grid-template-columns: auto auto auto auto;
+    // grid-gap: 1rem;
+    .titleCard {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      .text {
+        margin-left: 1rem;
+        font-size: large;
+        font-weight: bold;
+      }
+    }
+    .content-card {
+      height: auto;
+      width: auto;
+      .chart {
+        height: 10rem;
+      }
+      .ant-statistic {
+        width: 100%;
+      }
+      .ant-statistic-content {
+        white-space: normal;
+        .ant-statistic-content-value {
+          max-width: 100%;
+          overflow-wrap: break-word;
+        }
+      }
+    }
+  }
+}

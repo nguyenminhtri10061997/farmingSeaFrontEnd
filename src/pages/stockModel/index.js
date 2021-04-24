@@ -86,7 +86,7 @@ export default React.memo(() => {
           },
           {
             headerName: 'Giá vốn',
-            field: 'buyPrice',
+            field: 'detail.costPrice',
             width: 100
           },
           {
@@ -101,7 +101,7 @@ export default React.memo(() => {
                   if (idx === length - 1) {
                     return t
                   } else {
-                    return `${t}, ${fac} ${data.detail?.unit[idx]} = ${data.detail?.factor[idx + 1]} ${data.detail?.unit[idx]}`
+                    return `${t}, 1 ${data.detail?.unit[idx]} = ${data.detail?.factor[idx + 1]} ${data.detail?.unit[idx + 1]}`
                   }
                 }, '').substr(2)
               }

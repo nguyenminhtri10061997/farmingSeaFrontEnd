@@ -1,8 +1,8 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useReducer } from 'react'
 import { Select, Form } from 'antd'
-import { client } from '../../configs/apollo'
-import { patternRule, reducer } from '../../commons/commonFunc'
-import { SEARCH_VENDORS } from './gql'
+import { client } from '../../../configs/apollo'
+import { patternRule, reducer } from '../../../commons/commonFunc'
+import { SEARCH_CUSTOMERS } from '../gql'
 
 const { Option } = Select
 
@@ -15,13 +15,13 @@ export default React.memo(forwardRef((props, ref) => {
 
   const waiting = useRef()
 
-  const searchVendors = async (searchString = '', idDefault) => {
+  const searchCustomers = async (searchString = '', idDefault) => {
     const {
       data: {
-        searchVendors
+        searchCustomers
       }
     } = await client.query({
-      query: SEARCH_VENDORS,
+      query: SEARCH_CUSTOMERS,
       variables: {
         searchString,
         idDefault,
@@ -29,12 +29,12 @@ export default React.memo(forwardRef((props, ref) => {
       },
       fetchPolicy: 'no-cache'
     })
-    return searchVendors || []
+    return searchCustomers || []
   }
 
   const handleDidMount = async () => {
     setState({
-      optsVendor: await searchVendors()
+      optsVendor: await searchCustomers()
     })
   }
   useEffect(() => {
@@ -45,10 +45,10 @@ export default React.memo(forwardRef((props, ref) => {
     form
   }))
 
-  const handleSearchVendor = (val, wait) => {
+  const handleSearchCustomer = (val, wait) => {
     if (waiting.current) clearTimeout(waiting.current)
     waiting.current = setTimeout(async () => {
-      let optsVendor = await searchVendors(val)
+      let optsVendor = await searchCustomers(val)
       setState({
         optsVendor
       })
@@ -66,17 +66,17 @@ export default React.memo(forwardRef((props, ref) => {
         form={form}
       >
         <Form.Item
-          label='Nhà cung cấp'
-          name='idSrcVendor'
-          rules={[patternRule.required('Nhà cung cấp là bắt buộc')]}
+          label='Khách hàng'
+          name='idDesCustomer'
+          rules={[patternRule.required('Khách hàng là bắt buộc')]}
         >
           <Select
-            placeholder='Chọn nhà cung cấp'
-            onSearch={handleSearchVendor}
+            placeholder='Chọn khách hàng'
+            onSearch={handleSearchCustomer}
             showSearch
             filterOption={false}
           >
-            {state.optsVendor.map((item, i) => <Option key={`optsVendor-${i}`} value={item._id}>{item.name}</Option>)}
+            {state.optsVendor.map((item, i) => <Option key={`optsVendor-${i}`} value={item._id}>{item.code} - {item.fullName}</Option>)}
           </Select>
         </Form.Item>
       </Form>

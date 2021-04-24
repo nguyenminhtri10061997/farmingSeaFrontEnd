@@ -21,7 +21,7 @@ export default React.memo(() => {
 
   const { data, refetch } = useQuery(GET_ALL, {
     variables: {
-      type: 'IMPORT',
+      type: 'SALE',
       startDate: startDate.current,
       endDate: endDate.current,
       idSourceCompany: appContext.sourceCompany._id
@@ -66,20 +66,20 @@ export default React.memo(() => {
           rowData={data?.documents || []}
           columDefs={[
             {
-              headerName: 'Mã phiếu nhập',
+              headerName: 'Mã phiếu',
               field: 'code',
             },
             {
-              headerName: 'Tên nhà cung cấp',
-              field: 'srcVendor.name',
+              headerName: 'Tên Khách hàng',
+              field: 'desCustomer.fullName',
             },
             {
               headerName: 'Địa chỉ',
-              field: 'srcVendor.address',
+              field: 'desCustomer.address',
             },
             {
               headerName: 'SĐT',
-              field: 'srcVendor.mobile',
+              field: 'desCustomer.mobile',
             },
             {
               headerName: 'Tổng tiền',

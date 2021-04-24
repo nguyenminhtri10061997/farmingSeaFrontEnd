@@ -1,16 +1,17 @@
 
 import { AgGridReact, AgGridColumn } from 'ag-grid-react'
-import { Button } from 'antd'
+import { Button, Tooltip } from 'antd'
 import React, { useRef, useReducer, useEffect } from 'react'
 import { reducer } from '../../commons/commonFunc'
-import 'ag-grid-enterprise'
+// import 'ag-grid-enterprise'
 
 const Grid = React.memo(({ buttons, columDefs, checkboxSelection, onGridReady, ...props }) => {
   const [state, setState] = useReducer(reducer, {
     typeSelectedRow: 'none'
   })
   const gridApi = useRef()
-  const onPageSizeChanged = (val) => {
+  const onPageSizeChanged = (e) => {
+    const val = e.target.value
     gridApi.current.paginationSetPageSize(Number(val))
   }
   const handleChangeSelected = () => {
@@ -36,7 +37,7 @@ const Grid = React.memo(({ buttons, columDefs, checkboxSelection, onGridReady, .
   }, [props.rowData])
 
   return (
-    <div className='grid-content'>
+    <div className='grid-content ag-theme-alpine'>
       <div className='header-aggrid'>
         <div className='header-aggrid-pageSize'>
           Page Size:
@@ -58,16 +59,22 @@ const Grid = React.memo(({ buttons, columDefs, checkboxSelection, onGridReady, .
               isDisable = true
             }
             return (
-              <Button
-                key={idx}
-                type='link'
-                icon={button.icon}
-                size='default'
-                disabled={isDisable}
-                onClick={() => {
-                  button.onClick(gridApi.current.getSelectedRows())
-                }}
-              />
+              <Tooltip
+                key={`buttonGrid_${idx}`}
+                title={button.tooltip || ''}
+              >
+                <Button
+                  type='link'
+                  icon={button.icon}
+                  size='default'
+                  disabled={isDisable}
+                  onClick={() => {
+                    if (button.onClick) {
+                      button.onClick(gridApi.current.getSelectedRows())
+                    }
+                  }}
+                />
+              </Tooltip>
             )
           })}
         </div>

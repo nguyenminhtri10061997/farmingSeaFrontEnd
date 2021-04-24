@@ -10,6 +10,7 @@ export const GET_ALL = gql`
         unit
         factor
         buyPrice
+        costPrice
       }
     }
   }

@@ -1,22 +1,23 @@
 import React, { useReducer, useContext, useEffect } from 'react'
 import { Layout, Menu, Breadcrumb, Avatar, Row, Col, Dropdown, Select } from 'antd'
-import { PieChartOutlined, UserOutlined } from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { reducer } from '../../commons/commonFunc'
 import { AppContext } from '../../configs/appContext'
 // import logoConTom from '../../commons/images/logo-con-tom.jpg'
 import './index.scss'
 import listRouter from '../../configs/router'
-import 'ag-grid-community/dist/styles/ag-grid.css'
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
+import { menus } from '../../configs/router'
 
 const { Header, Content, Footer, Sider } = Layout
 const { Option } = Select
+const { SubMenu } = Menu
 
 const objPathToNameBreacum = {}
 listRouter.forEach(route => {
   objPathToNameBreacum[route.path] = route.name
 })
+
 export default React.memo((props) => {
   const appContext = useContext(AppContext)
 
@@ -51,9 +52,11 @@ export default React.memo((props) => {
   }
 
   useEffect(() => {
-    setState({
-      menuCurrentKeyActive: props.location.pathname.substr(1)
-    })
+    if (state.menuCurrentKeyActive !== props.location.pathname.substr(1)) {
+      setState({
+        menuCurrentKeyActive: props.location.pathname.substr(1)
+      })
+    }
   }, [props.location.pathname])
 
   return (
@@ -61,11 +64,25 @@ export default React.memo((props) => {
       <Sider collapsible collapsed={state.collapsed} onCollapse={handleOnCollapse}>
         <div style={ state.collapsed ? { backgroundPosition: '-10px 0px' } : { backgroundPosition: '-0px -20px' }} className='logo' onClick={handleClickLogo} />
         <Menu onSelect={handleSelectMenu} selectedKeys={[state.menuCurrentKeyActive]} theme='dark' defaultSelectedKeys={['1']} mode='inline'>
-          {listRouter.map(route => (
-            <Menu.Item key={route.component} icon={<PieChartOutlined />}>
-              <Link to={route.path}>{route.name}</Link>
-            </Menu.Item>
-          ))}
+          {menus.map((menu, idx) => {
+            if (menu.child) {
+              return (
+                <SubMenu key={`parentMenu_${idx}`} icon={menu.icon} title={menu.name}>
+                  {menu.child.map(route => (
+                    <Menu.Item key={route.component} icon={route.icon}>
+                      <Link to={route.path}>{route.name}</Link>
+                    </Menu.Item>
+                  ))}
+                </SubMenu>
+              )
+            }
+            const route = menu
+            return (
+              <Menu.Item key={route.component} icon={route.icon}>
+                <Link to={route.path}>{route.name}</Link>
+              </Menu.Item>
+            )
+          })}
         </Menu>
       </Sider>
       <Layout className='site-layout'>
@@ -127,7 +144,7 @@ export default React.memo((props) => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2018 Created by Ant UED
+          Tri Nguyen ©2021 Created 
         </Footer>
       </Layout>
     </Layout>
