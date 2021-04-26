@@ -17,8 +17,8 @@ if (tmp.includes(':')) {
   tmp = tmp.slice(0, tmp.indexOf(':'))
 }
 tmp = `${window.location.protocol}${tmp}`
-const urn = `${tmp.substr(window.location.protocol.length)}${process.env.PORT_BACK_END ? `:${process.env.PORT_BACK_END}` : ''}/${endPoint}`
-// const urn = `${tmp.substr(window.location.protocol.length)}/${endPoint}`
+// const urn = `${tmp.substr(window.location.protocol.length)}${process.env.PORT_BACK_END ? `:${process.env.PORT_BACK_END}` : ''}/${endPoint}`
+const urn = `${tmp.substr(window.location.protocol.length)}/${endPoint}`
 
 const httpLink = new HttpLink({
   uri: `${window.location.protocol}//${urn}`
