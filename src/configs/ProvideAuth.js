@@ -66,6 +66,10 @@ export default (props) => {
       sourceCompany
     })
   }
+
+  const getMeFunc = async () => {
+    await getMe()
+  }
   return (
     <AppContext.Provider
       value={{
@@ -73,7 +77,8 @@ export default (props) => {
         setAppRef,
         deleteAppRef,
         setAuth,
-        setSrcCompany
+        setSrcCompany,
+        getMeFunc
       }}
     >
       {props.children}

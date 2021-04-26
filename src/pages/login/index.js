@@ -31,9 +31,10 @@ export default React.memo((props) => {
       localStorage.removeItem('passwordInput')
     }
     localStorage.setItem('access-token', data.login.token)
-    setTimeout(() => {
-      appContext.setAuth(true)
+    setTimeout(async () => {
+      await appContext.getMeFunc()
       props.history.push('/home')
+      appContext.setAuth(true)
     })
   }
 
