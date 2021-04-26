@@ -53,8 +53,8 @@ export default React.memo((props) => {
           if (quan) {
             totalSTran += (quan || 0) * (sTran.salePrice[idx] || 0)
           }
-          totalCostTran += (sTran.count || 0) * (sTran.costPrice || 0)
         })
+        totalCostTran += (sTran.count || 0) * (sTran.costPrice || 0)
       })
       total += totalSTran - totalCostTran
     })
