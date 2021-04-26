@@ -299,12 +299,12 @@ export default React.memo(forwardRef((props, ref) => {
           <Button key='print' type='primary' onClick={handleClickPrint}>
             In phiếu
           </Button>,
+          <Button key='cancel' onClick={handleClickCancel} danger>
+            Hủy {state.selectedRow.state === 'COMPLETED' ? 'hoàn thành' : 'phiếu'} bán hàng
+          </Button>,
           <Button key='submit' type='primary' onClick={handleOk}>
             {!state.selectedRow?._id ? 'Bước tiếp theo' : 'Hoàn thành'}
           </Button>,
-          <Button key='cancel' onClick={handleClickCancel} danger>
-            Hủy {state.selectedRow.state === 'COMPLETED' ? 'hoàn thành' : 'phiếu'} bán hàng
-          </Button>
         ]
       } else {
         return [
