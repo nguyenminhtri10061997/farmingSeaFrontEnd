@@ -290,37 +290,44 @@ export default React.memo(forwardRef((props, ref) => {
   }
 
   const arrFooter = () => {
-    const arr = [
+    if (state.selectedRow?._id) {
+      if (state.selectedRow.state !== 'COMPLETED') {
+        return [
+          <Button key='close' onClick={handleCancel}>
+            Đóng
+          </Button>,
+          <Button key='print' type='primary' onClick={handleClickPrint}>
+            In phiếu
+          </Button>,
+          <Button key='submit' type='primary' onClick={handleOk}>
+            {!state.selectedRow?._id ? 'Bước tiếp theo' : 'Hoàn thành'}
+          </Button>,
+          <Button key='cancel' onClick={handleClickCancel} danger>
+            Hủy {state.selectedRow.state === 'COMPLETED' ? 'hoàn thành' : 'phiếu'} bán hàng
+          </Button>
+        ]
+      } else {
+        return [
+          <Button key='close' onClick={handleCancel}>
+            Đóng
+          </Button>,
+          <Button key='print' type='primary' onClick={handleClickPrint}>
+            In phiếu
+          </Button>,
+          <Button key='cancel' onClick={handleClickCancel} danger>
+            Hủy {state.selectedRow.state === 'COMPLETED' ? 'hoàn thành' : 'phiếu'} bán hàng
+          </Button>
+        ]
+      }
+    }
+    return [
       <Button key='close' onClick={handleCancel}>
         Đóng
       </Button>,
+      <Button key='submit' type='primary' onClick={handleOk}>
+        {!state.selectedRow?._id ? 'Bước tiếp theo' : 'Hoàn thành'}
+      </Button>,
     ]
-    if (state.selectedRow?._id) {
-      arr.splice(1, 0, (
-        <Button key='print' type='primary' onClick={handleClickPrint}>
-          In phiếu
-        </Button>
-      ))
-      if (state.selectedRow.state !== 'COMPLETED') {
-        arr.push((
-          <Button key='submit' type='primary' onClick={handleOk}>
-            {!state.selectedRow?._id ? 'Bước tiếp theo' : 'Hoàn thành'}
-          </Button>
-        ))
-      }
-      arr.splice(1, 0, (
-        <Button key='cancel' onClick={handleClickCancel} danger>
-          Hủy {state.selectedRow.state === 'COMPLETED' ? 'hoàn thành' : 'phiếu'} bán hàng
-        </Button>
-      ))
-    } else {
-      arr.splice(1, 0, (
-        <Button key='submit' type='primary' onClick={handleOk}>
-          {!state.selectedRow?._id ? 'Bước tiếp theo' : 'Hoàn thành'}
-        </Button>
-      ))
-    }
-    return arr
   }
 
   return (
